@@ -1,8 +1,8 @@
 package com.safronov.spring.rest.dao;
 
 import com.safronov.spring.rest.entity.Employee;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,32 +11,29 @@ import java.util.List;
 @Repository
 public class EmployeeDAOImpl implements EmployeeDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Employee> getAllEmployees() {
-        Session session = sessionFactory.unwrap(Session.class);
-        return session.createQuery("from Employee", Employee.class).getResultList();
+        return entityManager.createQuery("from Employee", Employee.class).getResultList();
     }
 
     @Override
     public void saveEmployee(Employee employee) {
-        Session session = sessionFactory.unwrap(Session.class);
-        session.saveOrUpdate(employee);
+        entityManager.merge(employee);
     }
 
     @Override
     public Employee getEmployeeById(int empId) {
-        Session session = sessionFactory.unwrap(Session.class);
-        return session.get(Employee.class, empId);
+        return entityManager.find(Employee.class, empId);
     }
 
     @Override
     public void deleteEmployee(int empId) {
-        Session session = sessionFactory.unwrap(Session.class);
-        org.hibernate.query.Query query = session.createQuery("delete from Employee where id =:id");
-        query.setParameter("id", empId);
-        query.executeUpdate();
+        Employee emp = entityManager.find(Employee.class, empId);
+        if (emp != null) {
+            entityManager.remove(emp);
+        }
     }
 }
