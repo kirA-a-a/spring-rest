@@ -1,13 +1,13 @@
 package com.safronov.spring.rest.controller;
 
 import com.safronov.spring.rest.entity.Employee;
-import com.safronov.spring.rest.exeption_handling.EmployeeIncorrectData;
 import com.safronov.spring.rest.exeption_handling.NoSuchEmployeeExtension;
 import com.safronov.spring.rest.secvice.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -33,20 +33,5 @@ public class MyRestController {
         }
 
         return employee;
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handleEmployeeIncorrectData(NoSuchEmployeeExtension e) {
-        EmployeeIncorrectData incorrectData = new EmployeeIncorrectData();
-        incorrectData.setInfo(e.getMessage());
-
-        return new ResponseEntity<>(incorrectData, HttpStatus.NOT_FOUND);
-    }
-    @ExceptionHandler
-    public ResponseEntity<EmployeeIncorrectData> handleEmployeeIncorrectData(Exception e) {
-        EmployeeIncorrectData incorrectData = new EmployeeIncorrectData();
-        incorrectData.setInfo(e.getMessage());
-
-        return new ResponseEntity<>(incorrectData, HttpStatus.BAD_REQUEST);
     }
 }
