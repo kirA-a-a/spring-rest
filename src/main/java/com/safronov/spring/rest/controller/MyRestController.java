@@ -38,4 +38,9 @@ public class MyRestController {
         return employeeService.saveEmployee(employee);
         
     }
+
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        return employeeService.saveEmployee(employee);
+    }
 }
