@@ -3,7 +3,6 @@ package com.safronov.spring.rest.dao;
 import com.safronov.spring.rest.entity.Employee;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,8 +19,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public void saveEmployee(Employee employee) {
-        entityManager.merge(employee);
+    public Employee saveEmployee(Employee employee) {
+        return entityManager.merge(employee);
     }
 
     @Override
